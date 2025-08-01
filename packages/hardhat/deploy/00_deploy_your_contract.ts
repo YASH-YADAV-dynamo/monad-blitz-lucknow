@@ -3,8 +3,8 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 
 /**
- * Deploys a contract named "YourContract" using the deployer account and
- * constructor arguments set to the deployer address
+ * Deploys a contract named "YourContract" (MonadPaymentSplitter) using the deployer account and
+ * constructor arguments set to example payees and shares
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
@@ -22,10 +22,15 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
+  // Example payees and shares for the PaymentSplitter
+  // You can modify these addresses and shares as needed
+  const payees = [deployer]; // For testing, just use the deployer as the only payee
+  const shares = [100]; // 100% share for the deployer
+
   await deploy("YourContract", {
     from: deployer,
-    // Contract constructor arguments
-    args: [deployer],
+    // Contract constructor arguments for MonadPaymentSplitter
+    args: [payees, shares],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -34,7 +39,10 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
 
   // Get the deployed contract to interact with it after deploying.
   const yourContract = await hre.ethers.getContract<Contract>("YourContract", deployer);
-  console.log("👋 Initial greeting:", await yourContract.greeting());
+  console.log("✅ MonadPaymentSplitter deployed successfully!");
+  console.log("📋 Contract address:", await yourContract.getAddress());
+  console.log("👤 Owner:", await yourContract.owner());
+  console.log("💰 Total shares:", await yourContract.totalShares());
 };
 
 export default deployYourContract;
