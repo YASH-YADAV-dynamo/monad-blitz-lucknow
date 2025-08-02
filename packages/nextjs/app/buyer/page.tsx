@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { NextPage } from "next";
-import { useAccount, useBalance, useContractRead, useContractWrite, useTransaction } from "wagmi";
+import { useAccount, useBalance, useContractRead, useSendTransaction, useTransaction } from "wagmi";
 import { ArrowLeftIcon, ClockIcon, CurrencyDollarIcon, ShoppingCartIcon, BanknotesIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContract } from "~~/hooks/scaffold-eth/useScaffoldContract";
@@ -45,7 +45,7 @@ const BuyerPage: NextPage = () => {
   });
 
   // Send payment function
-  const { writeContract, data: sendPaymentData } = useContractWrite();
+  const { sendTransaction, data: sendPaymentData } = useSendTransaction();
 
   // Wait for transaction
   const { isLoading: isTransactionLoading } = useTransaction({
@@ -69,10 +69,10 @@ const BuyerPage: NextPage = () => {
     
     try {
       setIsLoading(true);
-      await writeContract({
-        address: contract.address,
-        abi: contract.abi,
-        functionName: "receive",
+      // Send a direct transaction to the contract address with value
+      // This will trigger the receive() fallback function
+      await sendTransaction({
+        to: contract.address,
         value: parseEther(paymentAmount),
       });
     } catch (error) {
