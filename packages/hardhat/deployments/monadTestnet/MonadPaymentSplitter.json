@@ -1,0 +1,342 @@
+{
+  "address": "0xcBb048a4DFFe0ae3A38a59C40DB0162E2E2beE84",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_payees",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_shares",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PaymentReceived",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PaymentReleased",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "getPayeeCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "payees",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "pendingPayment",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "release",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "released",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "shares",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalReleased",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalShares",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x2aa8e1b3b805f3585430d28e66296bbbe1f489bc09a5d4d6a38f0b547fb869c5",
+  "receipt": {
+    "to": null,
+    "from": "0x698257fFDa57fFb352ba204D92AcD6E935d44d7a",
+    "contractAddress": "0xcBb048a4DFFe0ae3A38a59C40DB0162E2E2beE84",
+    "transactionIndex": 11,
+    "gasUsed": "493630",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xe8ba885845e37e26626e5f717a4b1709628de2c3b7ce0544ec8f5bad75e48bb8",
+    "transactionHash": "0x2aa8e1b3b805f3585430d28e66296bbbe1f489bc09a5d4d6a38f0b547fb869c5",
+    "logs": [],
+    "blockNumber": 28912101,
+    "cumulativeGasUsed": "2826070",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    [
+      "0x698257fFDa57fFb352ba204D92AcD6E935d44d7a"
+    ],
+    [
+      100
+    ]
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "a7cc296f18579c46ab93fbd7dd061601",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_payees\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_shares\",\"type\":\"uint256[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"PaymentReceived\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"PaymentReleased\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getPayeeCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"payees\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"pendingPayment\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"release\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"released\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"shares\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalReleased\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalShares\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"details\":\"Splits Ether payments among multiple payees based on their share. Each payee can withdraw their share independently.\",\"kind\":\"dev\",\"methods\":{\"constructor\":{\"params\":{\"_payees\":\"List of addresses to receive payments.\",\"_shares\":\"List of shares (proportional) for each payee.\"}}},\"title\":\"MonadPaymentSplitter (Custom Implementation)\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"constructor\":{\"notice\":\"Constructor sets payees and their share allocations.\"},\"getPayeeCount()\":{\"notice\":\"Returns number of payees.\"},\"pendingPayment(address)\":{\"notice\":\"Returns pending payment for a given account.\"},\"release(address)\":{\"notice\":\"Allows a payee to withdraw their pending payments.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/YourContract.sol\":\"MonadPaymentSplitter\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/YourContract.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.20;\\r\\n\\r\\n/**\\r\\n * @title MonadPaymentSplitter (Custom Implementation)\\r\\n * @dev Splits Ether payments among multiple payees based on their share.\\r\\n * Each payee can withdraw their share independently.\\r\\n */\\r\\ncontract MonadPaymentSplitter {\\r\\n    address public owner;\\r\\n    \\r\\n    uint256 public totalShares;\\r\\n    uint256 public totalReleased;\\r\\n\\r\\n    mapping(address => uint256) public shares;\\r\\n    mapping(address => uint256) public released;\\r\\n    address[] public payees;\\r\\n\\r\\n    event PaymentReceived(address indexed from, uint256 amount);\\r\\n    event PaymentReleased(address indexed to, uint256 amount);\\r\\n\\r\\n    /**\\r\\n     * @notice Constructor sets payees and their share allocations.\\r\\n     * @param _payees List of addresses to receive payments.\\r\\n     * @param _shares List of shares (proportional) for each payee.\\r\\n     */\\r\\n    constructor(address[] memory _payees, uint256[] memory _shares) {\\r\\n        require(_payees.length == _shares.length, \\\"Length mismatch\\\");\\r\\n        require(_payees.length > 0, \\\"No payees\\\");\\r\\n\\r\\n        owner = msg.sender;\\r\\n\\r\\n        for (uint256 i = 0; i < _payees.length; i++) {\\r\\n            address payee = _payees[i];\\r\\n            uint256 share = _shares[i];\\r\\n\\r\\n            require(payee != address(0), \\\"Invalid payee\\\");\\r\\n            require(share > 0, \\\"Share must be > 0\\\");\\r\\n            require(shares[payee] == 0, \\\"Payee already exists\\\");\\r\\n\\r\\n            payees.push(payee);\\r\\n            shares[payee] = share;\\r\\n            totalShares += share;\\r\\n        }\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Fallback function to accept Ether.\\r\\n     */\\r\\n    receive() external payable {\\r\\n        emit PaymentReceived(msg.sender, msg.value);\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Allows a payee to withdraw their pending payments.\\r\\n     */\\r\\n    function release(address account) public {\\r\\n        require(shares[account] > 0, \\\"Account has no shares\\\");\\r\\n\\r\\n        uint256 totalReceived = address(this).balance + totalReleased;\\r\\n        uint256 payment = (totalReceived * shares[account]) / totalShares - released[account];\\r\\n\\r\\n        require(payment > 0, \\\"No funds to release\\\");\\r\\n\\r\\n        released[account] += payment;\\r\\n        totalReleased += payment;\\r\\n\\r\\n        payable(account).transfer(payment);\\r\\n        emit PaymentReleased(account, payment);\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Returns number of payees.\\r\\n     */\\r\\n    function getPayeeCount() public view returns (uint256) {\\r\\n        return payees.length;\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Returns pending payment for a given account.\\r\\n     */\\r\\n    function pendingPayment(address account) public view returns (uint256) {\\r\\n        if (shares[account] == 0) return 0;\\r\\n\\r\\n        uint256 totalReceived = address(this).balance + totalReleased;\\r\\n        return (totalReceived * shares[account]) / totalShares - released[account];\\r\\n    }\\r\\n}\\r\\n\",\"keccak256\":\"0xd804a334f9720269bc5d627e4321a1a14d50a2ec1c2914f8aed49b4028f0e6df\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60806040523480156200001157600080fd5b5060405162000a6938038062000a69833981016040819052620000349162000395565b80518251146200007d5760405162461bcd60e51b815260206004820152600f60248201526e098cadccee8d040dad2e6dac2e8c6d608b1b60448201526064015b60405180910390fd5b6000825111620000bc5760405162461bcd60e51b81526020600482015260096024820152684e6f2070617965657360b81b604482015260640162000074565b600080546001600160a01b031916331781555b8251811015620002aa576000838281518110620000f057620000f062000473565b60200260200101519050600083838151811062000111576200011162000473565b6020026020010151905060006001600160a01b0316826001600160a01b0316036200016f5760405162461bcd60e51b815260206004820152600d60248201526c496e76616c696420706179656560981b604482015260640162000074565b60008111620001b55760405162461bcd60e51b815260206004820152601160248201527005368617265206d757374206265203e203607c1b604482015260640162000074565b6001600160a01b038216600090815260036020526040902054156200021d5760405162461bcd60e51b815260206004820152601460248201527f506179656520616c726561647920657869737473000000000000000000000000604482015260640162000074565b6005805460018082019092557f036b6384b5eca791c62761152d0c79bb0604c104a5fb6f4eb0703f3154bb3db00180546001600160a01b0319166001600160a01b03851690811790915560009081526003602052604081208390558154839291906200028b9084906200049f565b9250508190555050508080620002a190620004bb565b915050620000cf565b505050620004d7565b634e487b7160e01b600052604160045260246000fd5b604051601f8201601f191681016001600160401b0381118282101715620002f457620002f4620002b3565b604052919050565b60006001600160401b03821115620003185762000318620002b3565b5060051b60200190565b600082601f8301126200033457600080fd5b815160206200034d6200034783620002fc565b620002c9565b82815260059290921b840181019181810190868411156200036d57600080fd5b8286015b848110156200038a578051835291830191830162000371565b509695505050505050565b60008060408385031215620003a957600080fd5b82516001600160401b0380821115620003c157600080fd5b818501915085601f830112620003d657600080fd5b81516020620003e96200034783620002fc565b82815260059290921b840181019181810190898411156200040957600080fd5b948201945b83861015620004405785516001600160a01b0381168114620004305760008081fd5b825294820194908201906200040e565b918801519196509093505050808211156200045a57600080fd5b50620004698582860162000322565b9150509250929050565b634e487b7160e01b600052603260045260246000fd5b634e487b7160e01b600052601160045260246000fd5b80820180821115620004b557620004b562000489565b92915050565b600060018201620004d057620004d062000489565b5060010190565b61058280620004e76000396000f3fe60806040526004361061008a5760003560e01c80639852595c116100595780639852595c1461016e578063aeae177c1461019b578063ce7c2ac2146101bb578063da26ebc2146101e8578063e33b7de3146101fd57600080fd5b806319165587146100cb5780633a98ef39146100ed57806363037b0c146101165780638da5cb5b1461014e57600080fd5b366100c65760405134815233907f6ef95f06320e7a25a04a175ca677b7052bdd97131872c2192525a629f51be7709060200160405180910390a2005b600080fd5b3480156100d757600080fd5b506100eb6100e636600461048f565b610213565b005b3480156100f957600080fd5b5061010360015481565b6040519081526020015b60405180910390f35b34801561012257600080fd5b506101366101313660046104b8565b6103dd565b6040516001600160a01b03909116815260200161010d565b34801561015a57600080fd5b50600054610136906001600160a01b031681565b34801561017a57600080fd5b5061010361018936600461048f565b60046020526000908152604090205481565b3480156101a757600080fd5b506101036101b636600461048f565b610407565b3480156101c757600080fd5b506101036101d636600461048f565b60036020526000908152604090205481565b3480156101f457600080fd5b50600554610103565b34801561020957600080fd5b5061010360025481565b6001600160a01b0381166000908152600360205260409020546102755760405162461bcd60e51b81526020600482015260156024820152744163636f756e7420686173206e6f2073686172657360581b60448201526064015b60405180910390fd5b60006002544761028591906104e7565b6001600160a01b03831660009081526004602090815260408083205460015460039093529083205493945091926102bc9085610500565b6102c69190610517565b6102d09190610539565b9050600081116103185760405162461bcd60e51b81526020600482015260136024820152724e6f2066756e647320746f2072656c6561736560681b604482015260640161026c565b6001600160a01b038316600090815260046020526040812080548392906103409084906104e7565b92505081905550806002600082825461035991906104e7565b90915550506040516001600160a01b0384169082156108fc029083906000818181858888f19350505050158015610394573d6000803e3d6000fd5b50826001600160a01b03167fdf20fd1e76bc69d672e4814fafb2c449bba3a5369d8359adf9e05e6fde87b056826040516103d091815260200190565b60405180910390a2505050565b600581815481106103ed57600080fd5b6000918252602090912001546001600160a01b0316905081565b6001600160a01b038116600090815260036020526040812054810361042e57506000919050565b60006002544761043e91906104e7565b6001600160a01b038416600090815260046020908152604080832054600154600390935292205492935090916104749084610500565b61047e9190610517565b6104889190610539565b9392505050565b6000602082840312156104a157600080fd5b81356001600160a01b038116811461048857600080fd5b6000602082840312156104ca57600080fd5b5035919050565b634e487b7160e01b600052601160045260246000fd5b808201808211156104fa576104fa6104d1565b92915050565b80820281158282048414176104fa576104fa6104d1565b60008261053457634e487b7160e01b600052601260045260246000fd5b500490565b818103818111156104fa576104fa6104d156fea26469706673582212208af67bab9053aa981937a8d7fdf450c6073d9cefda6941cfd549a9d4f4d8f3e264736f6c63430008140033",
+  "deployedBytecode": "0x60806040526004361061008a5760003560e01c80639852595c116100595780639852595c1461016e578063aeae177c1461019b578063ce7c2ac2146101bb578063da26ebc2146101e8578063e33b7de3146101fd57600080fd5b806319165587146100cb5780633a98ef39146100ed57806363037b0c146101165780638da5cb5b1461014e57600080fd5b366100c65760405134815233907f6ef95f06320e7a25a04a175ca677b7052bdd97131872c2192525a629f51be7709060200160405180910390a2005b600080fd5b3480156100d757600080fd5b506100eb6100e636600461048f565b610213565b005b3480156100f957600080fd5b5061010360015481565b6040519081526020015b60405180910390f35b34801561012257600080fd5b506101366101313660046104b8565b6103dd565b6040516001600160a01b03909116815260200161010d565b34801561015a57600080fd5b50600054610136906001600160a01b031681565b34801561017a57600080fd5b5061010361018936600461048f565b60046020526000908152604090205481565b3480156101a757600080fd5b506101036101b636600461048f565b610407565b3480156101c757600080fd5b506101036101d636600461048f565b60036020526000908152604090205481565b3480156101f457600080fd5b50600554610103565b34801561020957600080fd5b5061010360025481565b6001600160a01b0381166000908152600360205260409020546102755760405162461bcd60e51b81526020600482015260156024820152744163636f756e7420686173206e6f2073686172657360581b60448201526064015b60405180910390fd5b60006002544761028591906104e7565b6001600160a01b03831660009081526004602090815260408083205460015460039093529083205493945091926102bc9085610500565b6102c69190610517565b6102d09190610539565b9050600081116103185760405162461bcd60e51b81526020600482015260136024820152724e6f2066756e647320746f2072656c6561736560681b604482015260640161026c565b6001600160a01b038316600090815260046020526040812080548392906103409084906104e7565b92505081905550806002600082825461035991906104e7565b90915550506040516001600160a01b0384169082156108fc029083906000818181858888f19350505050158015610394573d6000803e3d6000fd5b50826001600160a01b03167fdf20fd1e76bc69d672e4814fafb2c449bba3a5369d8359adf9e05e6fde87b056826040516103d091815260200190565b60405180910390a2505050565b600581815481106103ed57600080fd5b6000918252602090912001546001600160a01b0316905081565b6001600160a01b038116600090815260036020526040812054810361042e57506000919050565b60006002544761043e91906104e7565b6001600160a01b038416600090815260046020908152604080832054600154600390935292205492935090916104749084610500565b61047e9190610517565b6104889190610539565b9392505050565b6000602082840312156104a157600080fd5b81356001600160a01b038116811461048857600080fd5b6000602082840312156104ca57600080fd5b5035919050565b634e487b7160e01b600052601160045260246000fd5b808201808211156104fa576104fa6104d1565b92915050565b80820281158282048414176104fa576104fa6104d1565b60008261053457634e487b7160e01b600052601260045260246000fd5b500490565b818103818111156104fa576104fa6104d156fea26469706673582212208af67bab9053aa981937a8d7fdf450c6073d9cefda6941cfd549a9d4f4d8f3e264736f6c63430008140033",
+  "devdoc": {
+    "details": "Splits Ether payments among multiple payees based on their share. Each payee can withdraw their share independently.",
+    "kind": "dev",
+    "methods": {
+      "constructor": {
+        "params": {
+          "_payees": "List of addresses to receive payments.",
+          "_shares": "List of shares (proportional) for each payee."
+        }
+      }
+    },
+    "title": "MonadPaymentSplitter (Custom Implementation)",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "constructor": {
+        "notice": "Constructor sets payees and their share allocations."
+      },
+      "getPayeeCount()": {
+        "notice": "Returns number of payees."
+      },
+      "pendingPayment(address)": {
+        "notice": "Returns pending payment for a given account."
+      },
+      "release(address)": {
+        "notice": "Allows a payee to withdraw their pending payments."
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 4,
+        "contract": "contracts/YourContract.sol:MonadPaymentSplitter",
+        "label": "owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 6,
+        "contract": "contracts/YourContract.sol:MonadPaymentSplitter",
+        "label": "totalShares",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 8,
+        "contract": "contracts/YourContract.sol:MonadPaymentSplitter",
+        "label": "totalReleased",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 12,
+        "contract": "contracts/YourContract.sol:MonadPaymentSplitter",
+        "label": "shares",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 16,
+        "contract": "contracts/YourContract.sol:MonadPaymentSplitter",
+        "label": "released",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 19,
+        "contract": "contracts/YourContract.sol:MonadPaymentSplitter",
+        "label": "payees",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_array(t_address)dyn_storage"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address)dyn_storage": {
+        "base": "t_address",
+        "encoding": "dynamic_array",
+        "label": "address[]",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

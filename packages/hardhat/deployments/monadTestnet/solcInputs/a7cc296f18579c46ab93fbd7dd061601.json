@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/YourContract.sol": {
+      "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.20;\r\n\r\n/**\r\n * @title MonadPaymentSplitter (Custom Implementation)\r\n * @dev Splits Ether payments among multiple payees based on their share.\r\n * Each payee can withdraw their share independently.\r\n */\r\ncontract MonadPaymentSplitter {\r\n    address public owner;\r\n    \r\n    uint256 public totalShares;\r\n    uint256 public totalReleased;\r\n\r\n    mapping(address => uint256) public shares;\r\n    mapping(address => uint256) public released;\r\n    address[] public payees;\r\n\r\n    event PaymentReceived(address indexed from, uint256 amount);\r\n    event PaymentReleased(address indexed to, uint256 amount);\r\n\r\n    /**\r\n     * @notice Constructor sets payees and their share allocations.\r\n     * @param _payees List of addresses to receive payments.\r\n     * @param _shares List of shares (proportional) for each payee.\r\n     */\r\n    constructor(address[] memory _payees, uint256[] memory _shares) {\r\n        require(_payees.length == _shares.length, \"Length mismatch\");\r\n        require(_payees.length > 0, \"No payees\");\r\n\r\n        owner = msg.sender;\r\n\r\n        for (uint256 i = 0; i < _payees.length; i++) {\r\n            address payee = _payees[i];\r\n            uint256 share = _shares[i];\r\n\r\n            require(payee != address(0), \"Invalid payee\");\r\n            require(share > 0, \"Share must be > 0\");\r\n            require(shares[payee] == 0, \"Payee already exists\");\r\n\r\n            payees.push(payee);\r\n            shares[payee] = share;\r\n            totalShares += share;\r\n        }\r\n    }\r\n\r\n    /**\r\n     * @notice Fallback function to accept Ether.\r\n     */\r\n    receive() external payable {\r\n        emit PaymentReceived(msg.sender, msg.value);\r\n    }\r\n\r\n    /**\r\n     * @notice Allows a payee to withdraw their pending payments.\r\n     */\r\n    function release(address account) public {\r\n        require(shares[account] > 0, \"Account has no shares\");\r\n\r\n        uint256 totalReceived = address(this).balance + totalReleased;\r\n        uint256 payment = (totalReceived * shares[account]) / totalShares - released[account];\r\n\r\n        require(payment > 0, \"No funds to release\");\r\n\r\n        released[account] += payment;\r\n        totalReleased += payment;\r\n\r\n        payable(account).transfer(payment);\r\n        emit PaymentReleased(account, payment);\r\n    }\r\n\r\n    /**\r\n     * @notice Returns number of payees.\r\n     */\r\n    function getPayeeCount() public view returns (uint256) {\r\n        return payees.length;\r\n    }\r\n\r\n    /**\r\n     * @notice Returns pending payment for a given account.\r\n     */\r\n    function pendingPayment(address account) public view returns (uint256) {\r\n        if (shares[account] == 0) return 0;\r\n\r\n        uint256 totalReceived = address(this).balance + totalReleased;\r\n        return (totalReceived * shares[account]) / totalShares - released[account];\r\n    }\r\n}\r\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "paris",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

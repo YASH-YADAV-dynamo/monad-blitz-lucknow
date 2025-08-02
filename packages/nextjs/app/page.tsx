@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import { CurrencyDollarIcon, ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 
 const LandingPage: NextPage = () => {
@@ -43,16 +43,6 @@ const LandingPage: NextPage = () => {
               <ShoppingCartIcon className="h-8 w-8 fill-secondary" />
               <h3 className="text-xl font-bold mt-4 mb-2">Buyer</h3>
               <p>Send payments and manage your transactions. View payment history and track your spending.</p>
-            </Link>
-
-            <Link
-              href="/seller"
-              passHref
-              className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl hover:bg-base-200 transition-colors"
-            >
-              <CurrencyDollarIcon className="h-8 w-8 fill-secondary" />
-              <h3 className="text-xl font-bold mt-4 mb-2">Seller</h3>
-              <p>Receive payments and manage your revenue. Withdraw funds and view payment analytics.</p>
             </Link>
 
             <Link
