@@ -11,7 +11,9 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
   ClockIcon,
-  UserGroupIcon
+  UserGroupIcon,
+  WalletIcon,
+  ArrowRightIcon
 } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContract } from "~~/hooks/scaffold-eth/useScaffoldContract";
@@ -41,6 +43,7 @@ const ProfilePage: NextPage = () => {
   const [pendingSplits, setPendingSplits] = useState<PendingSplit[]>([]);
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'splits'>('profile');
   const [isLoading, setIsLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState<string | null>(null);
 
   // Initialize contract event listeners
   useContractEvents();
@@ -58,6 +61,7 @@ const ProfilePage: NextPage = () => {
   // Write contract hook
   const { writeContractAsync, isMining } = useScaffoldWriteContract("PaymentContract");
 
+  const { writeContractAsync: writePaymentContractAsync } = useScaffoldWriteContract("PaymentContract");
 
 
   // Handle paying for a split
@@ -96,6 +100,42 @@ const ProfilePage: NextPage = () => {
     }
   };
 
+  const handlePaySplitContract = async (splitNotification: any) => {
+    if (!connectedAddress || !splitNotification) return;
+
+    try {
+      setIsProcessing(splitNotification.id);
+      
+      await writePaymentContractAsync({
+        functionName: "processPayment",
+        args: [
+          splitNotification.creator as `0x${string}`,
+          parseEther(splitNotification.amount.toString())
+        ],
+        value: parseEther(splitNotification.amount.toString())
+      });
+
+      console.log("Payment processed successfully");
+    } catch (error) {
+      console.error("Error processing payment:", error);
+    } finally {
+      setIsProcessing(null);
+    }
+  };
+
+  // Dummy notification for testing
+  const dummyNotification = {
+    id: "dummy-1",
+    type: "split_request",
+    title: "Split Request",
+    message: "You have a pending split request",
+    amount: "0.0001",
+    creator: "0x1234567890123456789012345678901234567890",
+    timestamp: Date.now(),
+    isRead: false
+  };
+
+  const allNotifications = [dummyNotification, ...notifications];
 
 
   return (
@@ -222,76 +262,90 @@ const ProfilePage: NextPage = () => {
               {activeTab === 'notifications' && (
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-bold">Notifications</h2>
-                                         <button 
-                       className="btn btn-sm btn-outline"
-                       onClick={clearAll}
-                     >
-                       Clear All
-                     </button>
+                    <h2 className="text-xl font-bold text-white">Notifications ({allNotifications.length})</h2>
+                    <button 
+                      className="btn btn-sm bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                      onClick={clearAll}
+                    >
+                      Clear All
+                    </button>
                   </div>
                   
-                  {notifications.length === 0 ? (
-                    <div className="bg-base-100 p-8 rounded-lg border border-base-300 text-center">
-                      <BellIcon className="h-12 w-12 mx-auto mb-4 text-base-content/50" />
-                      <p className="text-lg font-medium mb-2">No notifications yet</p>
-                      <p className="text-base-content/70">You'll see notifications here when someone creates a split with you</p>
+                  {allNotifications.length === 0 ? (
+                    <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg border border-white/20 text-center">
+                      <BellIcon className="h-12 w-12 mx-auto mb-4 text-purple-300" />
+                      <p className="text-lg font-medium mb-2 text-white">No notifications yet</p>
+                      <p className="text-purple-200">You'll see notifications here when someone creates a split with you</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {notifications.map((notif) => (
+                      {allNotifications.map((notif) => (
                         <div 
                           key={notif.id} 
-                          className={`bg-base-100 p-4 rounded-lg border ${
-                            notif.isRead ? 'border-base-300' : 'border-primary'
+                          className={`bg-white/10 backdrop-blur-sm p-6 rounded-lg border transition-all duration-300 ${
+                            notif.isRead ? 'border-white/20 opacity-75' : 'border-purple-400/50 shadow-lg shadow-purple-500/20'
                           } ${notif.isCompleted ? 'opacity-60' : ''}`}
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-2">
+                              <div className="flex items-center space-x-2 mb-3">
                                 {notif.type === 'split_request' && (
-                                  <ExclamationTriangleIcon className="h-5 w-5 text-warning" />
+                                  <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400" />
                                 )}
                                 {notif.type === 'payment_received' && (
-                                  <CheckCircleIcon className="h-5 w-5 text-success" />
+                                  <CheckCircleIcon className="h-5 w-5 text-green-400" />
                                 )}
                                 {notif.type === 'group_created' && (
-                                  <UserGroupIcon className="h-5 w-5 text-info" />
+                                  <UserGroupIcon className="h-5 w-5 text-blue-400" />
                                 )}
-                                <h3 className="font-bold">{notif.title}</h3>
+                                <h3 className="font-bold text-white">{notif.title}</h3>
                                 {!notif.isRead && (
-                                  <span className="badge badge-primary badge-sm">New</span>
+                                  <span className="badge badge-primary badge-sm bg-purple-500 text-white">New</span>
                                 )}
                                 {notif.isCompleted && (
-                                  <span className="badge badge-success badge-sm">Completed</span>
+                                  <span className="badge badge-success badge-sm bg-green-500 text-white">Completed</span>
                                 )}
                               </div>
-                              <p className="text-base-content/70 mb-2">{notif.message}</p>
-                              <div className="flex items-center space-x-4 text-sm text-base-content/50">
-                                <span>From: <Address address={notif.from} /></span>
-                                <span>Amount: {notif.amount} MON</span>
+                              <p className="text-purple-200 mb-3">{notif.message}</p>
+                              <div className="flex items-center space-x-4 text-sm text-purple-300 mb-4">
+                                <span>From: <Address address={notif.from || notif.creator} /></span>
+                                <span>Amount: <strong className="text-white">{notif.amount} ETH</strong></span>
                                 <span>{new Date(notif.timestamp).toLocaleString()}</span>
                               </div>
+                              
+                              {notif.amount && (
+                                <div className="flex items-center space-x-4 mb-4">
+                                  <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg px-4 py-2">
+                                    <span className="text-white font-bold">{notif.amount} ETH</span>
+                                  </div>
+                                  {notif.creator && (
+                                    <div className="text-purple-300">
+                                      <span className="text-sm">From: </span>
+                                      <Address address={notif.creator as `0x${string}`} />
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
                             <div className="flex flex-col space-y-2">
-                                                             {!notif.isRead && (
-                                 <button 
-                                   className="btn btn-sm btn-outline"
-                                   onClick={() => markAsRead(notif.id)}
-                                 >
-                                   Mark Read
-                                 </button>
-                               )}
+                              {!notif.isRead && (
+                                <button 
+                                  className="btn btn-sm bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                                  onClick={() => markAsRead(notif.id)}
+                                >
+                                  Mark Read
+                                </button>
+                              )}
                               {notif.type === 'split_request' && !notif.isCompleted && (
                                 <button 
-                                  className="btn btn-sm btn-primary"
+                                  className="btn btn-sm bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold"
                                   onClick={() => handlePaySplit(notif)}
                                   disabled={isLoading || isMining}
                                 >
                                   {isLoading || isMining ? (
                                     <span className="loading loading-spinner loading-sm"></span>
                                   ) : (
-                                    `Pay ${notif.amount} MON`
+                                    `Pay ${notif.amount} ETH`
                                   )}
                                 </button>
                               )}
