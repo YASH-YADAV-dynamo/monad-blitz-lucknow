@@ -1,88 +1,86 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
-/**
- * @title MonadPaymentSplitter (Custom Implementation)
- * @dev Splits Ether payments among multiple payees based on their share.
- * Each payee can withdraw their share independently.
- */
-contract MonadPaymentSplitter {
+contract PaymentContract {
     address public owner;
-    
-    uint256 public totalShares;
-    uint256 public totalReleased;
 
-    mapping(address => uint256) public shares;
-    mapping(address => uint256) public released;
-    address[] public payees;
+    mapping(bytes32 => address[]) public groups;
+    mapping(bytes32 => mapping(address => bool)) public groupMembers;
+    mapping(bytes32 => uint) public groupBalances;
 
-    event PaymentReceived(address indexed from, uint256 amount);
-    event PaymentReleased(address indexed to, uint256 amount);
+    event PaymentProcessed(address indexed from, address indexed to, uint amount);
+    event GroupCreated(bytes32 groupHash, address creator);
+    event FundsAdded(bytes32 groupHash, address indexed user, uint amount);
+    event GroupFundsTransferred(bytes32 groupHash, address indexed to, uint amount);
 
-    /**
-     * @notice Constructor sets payees and their share allocations.
-     * @param _payees List of addresses to receive payments.
-     * @param _shares List of shares (proportional) for each payee.
-     */
-    constructor(address[] memory _payees, uint256[] memory _shares) {
-        require(_payees.length == _shares.length, "Length mismatch");
-        require(_payees.length > 0, "No payees");
-
+    constructor() {
         owner = msg.sender;
+    }
 
-        for (uint256 i = 0; i < _payees.length; i++) {
-            address payee = _payees[i];
-            uint256 share = _shares[i];
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
 
-            require(payee != address(0), "Invalid payee");
-            require(share > 0, "Share must be > 0");
-            require(shares[payee] == 0, "Payee already exists");
+    function processPayment(address _to, uint _amount) public payable {
+        require(_amount > 0, "Amount must be greater than 0");
+        require(msg.value == _amount, "Sent value must match amount");
 
-            payees.push(payee);
-            shares[payee] = share;
-            totalShares += share;
+        (bool sent, ) = _to.call{value: _amount}("");
+        require(sent, "Failed to send Ether");
+
+        emit PaymentProcessed(msg.sender, _to, _amount);
+    }
+
+    function createGroup(string memory _groupName) public returns (bytes32) {
+        bytes32 groupHash = keccak256(abi.encodePacked(_groupName, block.timestamp, msg.sender));
+        groupMembers[groupHash][msg.sender] = true;
+        groups[groupHash].push(msg.sender);
+        emit GroupCreated(groupHash, msg.sender);
+        return groupHash;
+    }
+
+    function addToGroup(bytes32 _groupHash, address _member) public {
+        require(groupMembers[_groupHash][msg.sender], "Only group member can add");
+        if (!groupMembers[_groupHash][_member]) {
+            groups[_groupHash].push(_member);
+            groupMembers[_groupHash][_member] = true;
         }
     }
 
-    /**
-     * @notice Fallback function to accept Ether.
-     */
-    receive() external payable {
-        emit PaymentReceived(msg.sender, msg.value);
+    function addFundsToGroup(bytes32 _groupHash) public payable {
+        require(groupMembers[_groupHash][msg.sender], "Only group member can add funds");
+        groupBalances[_groupHash] += msg.value;
+        emit FundsAdded(_groupHash, msg.sender, msg.value);
     }
 
-    /**
-     * @notice Allows a payee to withdraw their pending payments.
-     */
-    function release(address account) public {
-        require(shares[account] > 0, "Account has no shares");
+    function distributeFunds(bytes32 _groupHash) public onlyOwner {
+        uint balance = groupBalances[_groupHash];
+        require(balance > 0, "No funds to distribute");
 
-        uint256 totalReceived = address(this).balance + totalReleased;
-        uint256 payment = (totalReceived * shares[account]) / totalShares - released[account];
+        address[] memory members = groups[_groupHash];
+        uint amountPerMember = balance / members.length;
 
-        require(payment > 0, "No funds to release");
+        for (uint i = 0; i < members.length; i++) {
+            (bool sent, ) = members[i].call{value: amountPerMember}("");
+            require(sent, "Failed to send Ether");
+        }
 
-        released[account] += payment;
-        totalReleased += payment;
-
-        payable(account).transfer(payment);
-        emit PaymentReleased(account, payment);
+        groupBalances[_groupHash] = 0;
     }
 
-    /**
-     * @notice Returns number of payees.
-     */
-    function getPayeeCount() public view returns (uint256) {
-        return payees.length;
+    // function: Send total group funds to any external address
+    function sendGroupFundsTo(bytes32 _groupHash, address _to) public onlyOwner {
+        uint balance = groupBalances[_groupHash];
+        require(balance > 0, "No funds to send");
+
+        groupBalances[_groupHash] = 0;
+
+        (bool sent, ) = _to.call{value: balance}("");
+        require(sent, "Transfer failed");
+
+        emit GroupFundsTransferred(_groupHash, _to, balance);
     }
 
-    /**
-     * @notice Returns pending payment for a given account.
-     */
-    function pendingPayment(address account) public view returns (uint256) {
-        if (shares[account] == 0) return 0;
-
-        uint256 totalReceived = address(this).balance + totalReleased;
-        return (totalReceived * shares[account]) / totalShares - released[account];
-    }
+    receive() external payable {}
 }
