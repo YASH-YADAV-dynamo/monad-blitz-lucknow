@@ -9,9 +9,11 @@ contract PaymentContract {
     mapping(bytes32 => uint) public groupBalances;
 
     event PaymentProcessed(address indexed from, address indexed to, uint amount);
-    event GroupCreated(bytes32 groupHash, address creator);
+    event GroupCreated(bytes32 groupHash, address creator, string groupName);
+    event MemberAdded(bytes32 groupHash, address indexed member, address indexed addedBy);
     event FundsAdded(bytes32 groupHash, address indexed user, uint amount);
     event GroupFundsTransferred(bytes32 groupHash, address indexed to, uint amount);
+    event SplitRequestCreated(bytes32 groupHash, address indexed from, address indexed to, uint amount, string message);
 
     constructor() {
         owner = msg.sender;
@@ -33,10 +35,11 @@ contract PaymentContract {
     }
 
     function createGroup(string memory _groupName) public returns (bytes32) {
-        bytes32 groupHash = keccak256(abi.encodePacked(_groupName, block.timestamp, msg.sender));
+        // Use a deterministic hash that doesn't depend on block.timestamp
+        bytes32 groupHash = keccak256(abi.encodePacked(_groupName, msg.sender));
         groupMembers[groupHash][msg.sender] = true;
         groups[groupHash].push(msg.sender);
-        emit GroupCreated(groupHash, msg.sender);
+        emit GroupCreated(groupHash, msg.sender, _groupName);
         return groupHash;
     }
 
@@ -45,6 +48,7 @@ contract PaymentContract {
         if (!groupMembers[_groupHash][_member]) {
             groups[_groupHash].push(_member);
             groupMembers[_groupHash][_member] = true;
+            emit MemberAdded(_groupHash, _member, msg.sender);
         }
     }
 
@@ -52,6 +56,12 @@ contract PaymentContract {
         require(groupMembers[_groupHash][msg.sender], "Only group member can add funds");
         groupBalances[_groupHash] += msg.value;
         emit FundsAdded(_groupHash, msg.sender, msg.value);
+    }
+
+    function createSplitRequest(bytes32 _groupHash, address _member, uint _amount, string memory _message) public {
+        require(groupMembers[_groupHash][msg.sender], "Only group member can create split request");
+        require(groupMembers[_groupHash][_member], "Member must be in the group");
+        emit SplitRequestCreated(_groupHash, msg.sender, _member, _amount, _message);
     }
 
     function distributeFunds(bytes32 _groupHash) public onlyOwner {

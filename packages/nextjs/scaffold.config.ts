@@ -53,8 +53,8 @@ const scaffoldConfig = {
   // If you want to use a different RPC for a specific network, you can add it here.
   // The key is the chain ID, and the value is the HTTP RPC URL
   rpcOverrides: {
-    // Example:
-    // [chains.mainnet.id]: "https://mainnet.buidlguidl.com",
+    // Use Monad's official RPC for testnet instead of Alchemy
+    [monadTestnet.id]: "https://testnet-rpc.monad.xyz/",
   },
 
   // This is ours WalletConnect's default project ID.

@@ -212,7 +212,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     PaymentContract: {
-      address: "0x28005F8446E62DD034aCD306471f135572083FA0",
+      address: "0x5cfB11f5416b1FCF81DF1C9c404F67D6e36f71dd",
       abi: [
         {
           inputs: [],
@@ -259,6 +259,12 @@ const deployedContracts = {
               name: "creator",
               type: "address",
             },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "groupName",
+              type: "string",
+            },
           ],
           name: "GroupCreated",
           type: "event",
@@ -292,6 +298,31 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
+              indexed: false,
+              internalType: "bytes32",
+              name: "groupHash",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "member",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "addedBy",
+              type: "address",
+            },
+          ],
+          name: "MemberAdded",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
               indexed: true,
               internalType: "address",
               name: "from",
@@ -311,6 +342,43 @@ const deployedContracts = {
             },
           ],
           name: "PaymentProcessed",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "bytes32",
+              name: "groupHash",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "from",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "message",
+              type: "string",
+            },
+          ],
+          name: "SplitRequestCreated",
           type: "event",
         },
         {
@@ -360,6 +428,34 @@ const deployedContracts = {
               type: "bytes32",
             },
           ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "_groupHash",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "_member",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_amount",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "_message",
+              type: "string",
+            },
+          ],
+          name: "createSplitRequest",
+          outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },

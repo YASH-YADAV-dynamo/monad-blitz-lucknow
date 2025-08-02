@@ -5,9 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { hardhat } from "viem/chains";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BugAntIcon, UserIcon, BellIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
+import { useAccount } from "wagmi";
+import { NotificationManager } from "~~/utils/notificationUtils";
+import { useState, useEffect } from "react";
 
 type HeaderMenuLink = {
   label: string;
@@ -20,7 +23,10 @@ export const menuLinks: HeaderMenuLink[] = [
     label: "Home",
     href: "/",
   },
-
+  {
+    label: "Pay & Split",
+    href: "/buyer",
+  },
   {
     label: "Debug Contracts",
     href: "/debug",
@@ -59,12 +65,29 @@ export const HeaderMenuLinks = () => {
  */
 export const Header = () => {
   const { targetNetwork } = useTargetNetwork();
+  const { address: connectedAddress } = useAccount();
+  const [notificationCount, setNotificationCount] = useState(0);
   const isLocalNetwork = targetNetwork.id === hardhat.id;
 
   const burgerMenuRef = useRef<HTMLDetailsElement>(null);
   useOutsideClick(burgerMenuRef, () => {
     burgerMenuRef?.current?.removeAttribute("open");
   });
+
+  // Update notification count
+  useEffect(() => {
+    if (connectedAddress) {
+      const updateCount = () => {
+        const count = NotificationManager.getUnreadCount(connectedAddress);
+        setNotificationCount(count);
+      };
+      
+      updateCount();
+      const interval = setInterval(updateCount, 2000); // Check every 2 seconds
+      
+      return () => clearInterval(interval);
+    }
+  }, [connectedAddress]);
 
   return (
     <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
@@ -96,6 +119,22 @@ export const Header = () => {
         </ul>
       </div>
       <div className="navbar-end grow mr-4">
+        {connectedAddress && (
+          <>
+            <Link href="/profile" className="btn btn-ghost btn-sm mr-2">
+              <UserIcon className="h-5 w-5" />
+              Profile
+            </Link>
+            <Link href="/profile" className="btn btn-ghost btn-sm mr-2 relative">
+              <BellIcon className="h-5 w-5" />
+              {notificationCount > 0 && (
+                <span className="badge badge-primary badge-xs absolute -top-1 -right-1">
+                  {notificationCount}
+                </span>
+              )}
+            </Link>
+          </>
+        )}
         <RainbowKitCustomConnectButton />
         {isLocalNetwork && <FaucetButton />}
       </div>

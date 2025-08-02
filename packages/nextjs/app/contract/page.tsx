@@ -79,7 +79,7 @@ const ContractPage: NextPage = () => {
                 </div>
                 <div>
                   <p className="font-medium mb-2">Contract Owner:</p>
-                  <Address address={owner} />
+                  {owner && typeof owner === 'string' ? <Address address={owner} /> : null}
                 </div>
                 <div>
                   <p className="font-medium mb-2">Contract Balance:</p>
@@ -94,7 +94,7 @@ const ContractPage: NextPage = () => {
                 <div>
                   <p className="font-medium mb-2">Total Released:</p>
                   <p className="text-lg font-bold">
-                    {totalReleased ? formatEther(totalReleased) : "0"} MON
+                    {totalReleased ? formatEther(totalReleased as bigint) : "0"} MON
                   </p>
                 </div>
                 <div>

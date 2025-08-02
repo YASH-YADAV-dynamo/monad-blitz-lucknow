@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/YourContract.sol": {
+      "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract PaymentContract {\r\n    address public owner;\r\n\r\n    mapping(bytes32 => address[]) public groups;\r\n    mapping(bytes32 => mapping(address => bool)) public groupMembers;\r\n    mapping(bytes32 => uint) public groupBalances;\r\n\r\n    event PaymentProcessed(address indexed from, address indexed to, uint amount);\r\n    event GroupCreated(bytes32 groupHash, address creator, string groupName);\r\n    event MemberAdded(bytes32 groupHash, address indexed member, address indexed addedBy);\r\n    event FundsAdded(bytes32 groupHash, address indexed user, uint amount);\r\n    event GroupFundsTransferred(bytes32 groupHash, address indexed to, uint amount);\r\n    event SplitRequestCreated(bytes32 groupHash, address indexed from, address indexed to, uint amount, string message);\r\n\r\n    constructor() {\r\n        owner = msg.sender;\r\n    }\r\n\r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner, \"Only owner can call this function\");\r\n        _;\r\n    }\r\n\r\n    function processPayment(address _to, uint _amount) public payable {\r\n        require(_amount > 0, \"Amount must be greater than 0\");\r\n        require(msg.value == _amount, \"Sent value must match amount\");\r\n\r\n        (bool sent, ) = _to.call{value: _amount}(\"\");\r\n        require(sent, \"Failed to send Ether\");\r\n\r\n        emit PaymentProcessed(msg.sender, _to, _amount);\r\n    }\r\n\r\n    function createGroup(string memory _groupName) public returns (bytes32) {\r\n        bytes32 groupHash = keccak256(abi.encodePacked(_groupName, block.timestamp, msg.sender));\r\n        groupMembers[groupHash][msg.sender] = true;\r\n        groups[groupHash].push(msg.sender);\r\n        emit GroupCreated(groupHash, msg.sender, _groupName);\r\n        return groupHash;\r\n    }\r\n\r\n    function addToGroup(bytes32 _groupHash, address _member) public {\r\n        require(groupMembers[_groupHash][msg.sender], \"Only group member can add\");\r\n        if (!groupMembers[_groupHash][_member]) {\r\n            groups[_groupHash].push(_member);\r\n            groupMembers[_groupHash][_member] = true;\r\n            emit MemberAdded(_groupHash, _member, msg.sender);\r\n        }\r\n    }\r\n\r\n    function addFundsToGroup(bytes32 _groupHash) public payable {\r\n        require(groupMembers[_groupHash][msg.sender], \"Only group member can add funds\");\r\n        groupBalances[_groupHash] += msg.value;\r\n        emit FundsAdded(_groupHash, msg.sender, msg.value);\r\n    }\r\n\r\n    function createSplitRequest(bytes32 _groupHash, address _member, uint _amount, string memory _message) public {\r\n        require(groupMembers[_groupHash][msg.sender], \"Only group member can create split request\");\r\n        require(groupMembers[_groupHash][_member], \"Member must be in the group\");\r\n        emit SplitRequestCreated(_groupHash, msg.sender, _member, _amount, _message);\r\n    }\r\n\r\n    function distributeFunds(bytes32 _groupHash) public onlyOwner {\r\n        uint balance = groupBalances[_groupHash];\r\n        require(balance > 0, \"No funds to distribute\");\r\n\r\n        address[] memory members = groups[_groupHash];\r\n        uint amountPerMember = balance / members.length;\r\n\r\n        for (uint i = 0; i < members.length; i++) {\r\n            (bool sent, ) = members[i].call{value: amountPerMember}(\"\");\r\n            require(sent, \"Failed to send Ether\");\r\n        }\r\n\r\n        groupBalances[_groupHash] = 0;\r\n    }\r\n\r\n    // function: Send total group funds to any external address\r\n    function sendGroupFundsTo(bytes32 _groupHash, address _to) public onlyOwner {\r\n        uint balance = groupBalances[_groupHash];\r\n        require(balance > 0, \"No funds to send\");\r\n\r\n        groupBalances[_groupHash] = 0;\r\n\r\n        (bool sent, ) = _to.call{value: balance}(\"\");\r\n        require(sent, \"Transfer failed\");\r\n\r\n        emit GroupFundsTransferred(_groupHash, _to, balance);\r\n    }\r\n\r\n    receive() external payable {}\r\n}\r\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "paris",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

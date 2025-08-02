@@ -38,7 +38,6 @@ const SellerPage: NextPage = () => {
     abi: contract?.abi,
     functionName: "shares",
     args: connectedAddress ? [connectedAddress] : undefined,
-    enabled: !!connectedAddress,
   });
 
   const { data: userReleased } = useContractRead({
@@ -46,7 +45,6 @@ const SellerPage: NextPage = () => {
     abi: contract?.abi,
     functionName: "released",
     args: connectedAddress ? [connectedAddress] : undefined,
-    enabled: !!connectedAddress,
   });
 
   const { data: pendingPayment } = useContractRead({
@@ -54,7 +52,6 @@ const SellerPage: NextPage = () => {
     abi: contract?.abi,
     functionName: "pendingPayment",
     args: connectedAddress ? [connectedAddress] : undefined,
-    enabled: !!connectedAddress,
   });
 
   // Contract balance
@@ -138,12 +135,12 @@ const SellerPage: NextPage = () => {
               <p className="font-medium">
                 {isPayee ? "✅ You are a registered payee" : "⚠️ You are not a registered payee"}
               </p>
-              {isPayee && (
+              {isPayee && userShares && typeof userShares === 'bigint' ? (
                 <p className="text-sm mt-1">
-                  Shares: {userShares?.toString() || "0"} | 
+                  Shares: {userShares.toString()} | 
                   Released: {userReleased && typeof userReleased === 'bigint' ? formatEther(userReleased) : "0"} MON
                 </p>
-              )}
+              ) : null}
             </div>
           )}
 
@@ -214,11 +211,11 @@ const SellerPage: NextPage = () => {
                     You need to be a registered payee to withdraw funds.
                   </p>
                 )}
-                {isPayee && !canWithdraw && (
+                {isPayee && pendingPayment && typeof pendingPayment === 'bigint' && !canWithdraw ? (
                   <p className="text-sm text-base-content/70">
                     No pending payments available for withdrawal.
                   </p>
-                )}
+                ) : null}
               </div>
             </div>
 
