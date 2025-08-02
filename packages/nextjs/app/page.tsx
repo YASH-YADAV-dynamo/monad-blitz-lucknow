@@ -3,10 +3,10 @@
 import Link from "next/link";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { CurrencyDollarIcon, ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 
-const Home: NextPage = () => {
+const LandingPage: NextPage = () => {
   const { address: connectedAddress } = useAccount();
 
   return (
@@ -15,53 +15,55 @@ const Home: NextPage = () => {
         <div className="px-5">
           <h1 className="text-center">
             <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
+            <span className="block text-4xl font-bold">Monad Payment Splitter</span>
           </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
-          </div>
+          <p className="text-center text-lg mt-4">A decentralized payment splitting solution on Monad blockchain</p>
 
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
+          {connectedAddress && (
+            <div className="flex justify-center items-center space-x-2 flex-col mt-6">
+              <p className="my-2 font-medium">Connected Address:</p>
+              <Address address={connectedAddress} />
+            </div>
+          )}
+
+          {!connectedAddress && (
+            <div className="text-center mt-6">
+              <p className="text-lg">Please connect your wallet to get started</p>
+            </div>
+          )}
         </div>
 
         <div className="grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col md:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
+            <Link
+              href="/buyer"
+              passHref
+              className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl hover:bg-base-200 transition-colors"
+            >
+              <ShoppingCartIcon className="h-8 w-8 fill-secondary" />
+              <h3 className="text-xl font-bold mt-4 mb-2">Buyer</h3>
+              <p>Send payments and manage your transactions. View payment history and track your spending.</p>
+            </Link>
+
+            <Link
+              href="/seller"
+              passHref
+              className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl hover:bg-base-200 transition-colors"
+            >
+              <CurrencyDollarIcon className="h-8 w-8 fill-secondary" />
+              <h3 className="text-xl font-bold mt-4 mb-2">Seller</h3>
+              <p>Receive payments and manage your revenue. Withdraw funds and view payment analytics.</p>
+            </Link>
+
+            <Link
+              href="/contract"
+              passHref
+              className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl hover:bg-base-200 transition-colors"
+            >
+              <UserIcon className="h-8 w-8 fill-secondary" />
+              <h3 className="text-xl font-bold mt-4 mb-2">Contract</h3>
+              <p>Interact with the smart contract directly. Debug, test, and manage contract functions.</p>
+            </Link>
           </div>
         </div>
       </div>
@@ -69,4 +71,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default LandingPage;
